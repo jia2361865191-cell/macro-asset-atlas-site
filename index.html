@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b1116">
+  <meta name="description" content="探索黄金、美元、美股、美债和石油的宏观关系。切换市场情景，点击资产连线，亲手调整宏观变量。">
+  <title>资产引力场 — 五大资产关系实验室</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b1116'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-size='20' fill='%23d7b46d'%3E%E2%9C%B3%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="learning.css">
+  <script src="model.js" defer></script>
+  <script src="artwork.js" defer></script>
+  <script src="asset-notes.js" defer></script>
+  <script src="pair-notes.js" defer></script>
+  <script src="relation-scenes.js" defer></script>
+  <script src="direction-demo.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="learning-data.js" defer></script>
+  <script src="learning.js" defer></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-mark" aria-hidden="true">✳</span> 资产引力场 <span class="brand-en">ASSET ATLAS</span></a>
+  <nav aria-label="主导航"><a class="nav-current" href="#lab">关系实验室</a><a href="#variables">宏观推演</a><button class="text-button" id="source-open">原理与来源 <span aria-hidden="true">↗</span></button></nav>
+</header>
+<main>
+  <section class="intro">
+    <div><p class="eyebrow"><span class="live-dot"></span> MACRO CONNECTIONS / 宏观资产地图</p>
+    <h1>看懂资产之间的<span>引力。</span></h1>
+    <p class="intro-copy">黄金、美元、美股、美债、石油。<br class="mobile-break">五种资产，同一个世界。改变一个情景，观察资产如何联动。</p></div>
+    <div class="intro-note"><span class="note-number">05<span> / ASSETS</span></span><p>关系随环境变化<br>先看驱动，再看涨跌</p></div>
+  </section>
+
+  <nav class="chapter-nav" aria-label="学习板块导航"><a href="#lab">资产关系</a><a href="#history">历史周期</a><a href="#dollar-cycle">美元循环</a><a href="#asset-roles">资产角色</a><a href="#perspective">本质与思考</a></nav>
+
+  <section id="lab" aria-label="资产关系实验室">
+    <div class="scenario-heading"><h2><span class="section-num">01</span> 选择一个市场情景</h2><span class="simulation-label">机制演示 · 非实时行情</span></div>
+    <div class="scenario-bar" id="scenarios" role="group" aria-label="市场情景"></div>
+    <div class="workspace insight-collapsed" id="asset-workspace">
+      <section class="map-panel" aria-label="互动关系图">
+        <div class="panel-head"><div><span class="mini-label">INTERACTIVE MAP</span><h2>五大资产关系图 <span class="info-hint">点选后移向另一资产，或直接拖过去 · 双击切换强弱</span></h2></div><button class="small-button" id="show-all">显示全部</button></div>
+        <div class="direction-demo-bar" id="direction-demo-bar" hidden><p id="direction-demo-label" role="status" aria-live="polite"></p><button type="button" id="clear-direction">恢复情景推演 ↺</button></div>
+        <div class="map-wrap">
+          <svg class="network" viewBox="0 0 900 560" role="img" aria-labelledby="network-title network-desc"><title id="network-title">五大资产的关系网络</title><desc id="network-desc">点击图上的资产按钮或下方关系按钮，查看条件、传导机制和例外。连线表示机制关联，并不表示资金流量。</desc>
+            <defs><radialGradient id="halo"><stop offset="0" stop-color="#c9a869" stop-opacity=".08"/><stop offset="1" stop-color="#c9a869" stop-opacity="0"/></radialGradient></defs>
+            <circle cx="450" cy="280" r="220" fill="url(#halo)"/><circle cx="450" cy="280" r="185" class="orbit"/><circle cx="450" cy="280" r="112" class="orbit orbit-inner"/>
+            <g id="edges"></g>
+            <line id="gesture-line" class="gesture-line" hidden/>
+          </svg>
+          <div class="map-center" id="relation-center" role="status" aria-live="polite" aria-atomic="true"><span class="center-cross" aria-hidden="true">＋</span><span>共同驱动</span><strong>利率 · 增长 · 风险</strong><small>点击一条连线，查看关系动态</small></div>
+          <div id="nodes"></div>
+          <div class="map-caption"><span class="legend-solid"></span> 当前聚焦关系 <span class="legend-dashed"></span> 其他机制关联</div>
+        </div>
+        <div class="map-bottom"><span><span class="gold-dot"></span> <span id="focus-label">聚焦：黄金</span></span><span><span class="up">↑ 偏强</span>　 <span class="down">↓ 偏弱</span>　 ↔ 不定</span></div>
+        <p class="map-instructions" id="map-instructions">点选资产后，把指针移到另一资产；也可按住拖动。手机可依次点两个资产。双击任一资产：先偏弱，再偏强。</p>
+        <div class="pair-reading-status" id="pair-reading-status" role="status" aria-live="polite" hidden></div>
+      </section>
+      <button type="button" class="insight-toggle" id="insight-toggle" aria-controls="insight-panel" aria-expanded="false" aria-label="展开关系面板"><span id="insight-toggle-arrow" aria-hidden="true">‹</span><span class="insight-toggle-label">关系面板</span></button>
+      <aside class="insight-panel" id="insight-panel" aria-label="资产关系解读" aria-live="polite" aria-atomic="false" hidden>
+        <div class="insight-top"><span class="mini-label">THE TRANSMISSION</span><span id="scenario-tag" class="scenario-tag"></span><button type="button" id="insight-close" class="insight-close" aria-label="收起关系面板">收起 ›</button></div>
+        <div id="insight-content"></div>
+      </aside>
+    </div>
+    <div class="pair-explorer"><div><span class="mini-label">EXPLORE A PAIR</span><h3>两两关系，逐一拆解</h3></div><div class="pair-buttons" id="pairs" role="group" aria-label="选择两类资产的关系"></div></div>
+    <section class="pair-reading" id="pair-reading" aria-labelledby="pair-reading-title" hidden></section>
+  </section>
+
+  <section class="outlook-section" aria-labelledby="outlook-title">
+    <div class="section-heading"><h2 id="outlook-title"><span class="section-num">02</span> 这个情景下，资产可能怎么走？</h2><div class="bond-control"><span>美债显示</span><div class="segmented" role="group" aria-label="美债显示口径"><button id="bond-price" aria-pressed="true" class="active">价格</button><button id="bond-yield" aria-pressed="false">收益率</button></div></div></div>
+    <div class="outcomes" id="outcomes" aria-live="polite"></div>
+    <p class="context-note"><span aria-hidden="true">↳</span> <span id="context-note"></span></p>
+  </section>
+
+  <section class="variables-section" id="variables" aria-labelledby="variables-title">
+    <div class="section-heading"><div><span class="mini-label">YOUR MACRO, YOUR SCENARIO</span><h2 id="variables-title"><span class="section-num">03</span> 亲手改变宏观变量</h2></div><button id="reset" class="small-button">↺ 恢复当前情景</button></div>
+    <p class="variables-intro">拖动滑块，观察五类资产的方向如何改变。刻度表示假设冲击强度，没有百分比或利率单位。</p>
+    <div class="sliders" id="sliders"></div>
+    <div class="model-foot"><span id="model-status" aria-live="polite">当前使用预设情景</span><button class="text-button" id="model-open">查看推演假设 <span aria-hidden="true">↗</span></button></div>
+  </section>
+
+  <section class="history-section learning-section" id="history" aria-labelledby="history-title">
+    <div class="learning-heading"><div><span class="mini-label">FIVE CYCLES / 历史里的五种答案</span><h2 id="history-title"><span class="section-num">04</span> 把关系放回历史，看它如何变。</h2></div><span class="learning-caption">选择周期，再看不同阶段</span></div>
+    <p class="learning-intro">从70年代滞胀到2022年加息。同一组资产，在恐慌、政策应对和复苏阶段，往往会给出不同答案。</p>
+    <div class="history-tabs" id="history-tabs" role="tablist" aria-label="选择历史周期"></div>
+    <div class="history-panel" id="history-panel" role="tabpanel" tabindex="0">
+      <header class="history-head"><p class="history-period" id="history-period"></p><h3 id="history-case-title"></h3><p id="history-intro"></p></header>
+      <div class="history-metrics" id="history-metrics"></div>
+      <div class="history-stage-layout"><div class="history-phases" id="history-phases" role="group" aria-label="选择周期阶段"></div><div class="history-stage" id="history-stage" aria-live="polite" aria-atomic="true"></div></div>
+      <div class="historical-response"><div class="historical-response-head"><h4>这一阶段，五类资产如何受到影响？</h4><span>阶段性概括 · 美债指价格 · 非收益率统计</span></div><div class="historical-assets" id="historical-assets" aria-live="polite"></div></div>
+      <div class="history-lesson"><span>这个周期教会我们</span><p id="history-lesson"></p></div>
+      <details class="learning-boundary"><summary>理解这段历史的边界与参考来源</summary><p id="history-boundary"></p><div class="learning-sources" id="history-sources"></div></details>
+    </div>
+  </section>
+
+  <section class="dollar-cycle-section learning-section" id="dollar-cycle" aria-labelledby="dollar-cycle-title">
+    <div class="learning-heading"><div><span class="mini-label">THE DOLLAR LOOP / 全球美元潮汐</span><h2 id="dollar-cycle-title"><span class="section-num">05</span> 本质总结：美元循环</h2></div><span class="learning-caption">点击任一环节展开</span></div>
+    <p class="learning-intro">黄金、美元、美股、美债和石油都在同一个全球金融网络里。沿着四步流程看，一笔出口赚来的美元如何用于贸易和投资，又如何通过美国金融市场回流。</p>
+    <div class="dollar-flow" id="dollar-flow" role="group" aria-label="选择美元循环环节"></div>
+    <article class="dollar-detail" id="dollar-detail" aria-live="polite" aria-atomic="true"></article>
+  </section>
+
+  <section class="roles-section learning-section" id="asset-roles" aria-labelledby="roles-title">
+    <div class="learning-heading"><div><span class="mini-label">FIVE ROLES / 循环中的五个位置</span><h2 id="roles-title"><span class="section-num">06</span> 同一个世界，五种不同的角色。</h2></div></div>
+    <p class="learning-intro">选择一个资产，读懂它在循环里的作用。带有“当前环节”标记的资产，与上面选中的美元循环步骤直接相关。</p>
+    <div class="role-cards" id="role-cards" role="group" aria-label="选择循环中的资产角色"></div>
+    <div class="role-detail" id="role-detail" aria-live="polite" aria-atomic="true"></div>
+  </section>
+
+  <section class="loop-analysis" id="dollar-tensions" aria-labelledby="dollar-tensions-title">
+    <div class="learning-heading"><h2 id="dollar-tensions-title">美元体系的优势与约束</h2></div>
+    <div class="loop-tensions">
+      <article>
+        <span>01 / 融资优势</span>
+        <h3>为什么资金愿意回流？</h3>
+        <p>美国企业和政府可以用本币借款，全球买家则获得流动性较好的美元资产。广泛的买家基础有助于降低融资成本，长期优势取决于市场深度、购买力和制度信任。</p>
+      </article>
+      <article>
+        <span>02 / 财政约束</span>
+        <h3>贸易逆差和财政赤字怎么区分？</h3>
+        <p>贸易逆差看进出口差额，财政赤字看政府收支差额。美元也能通过跨境信贷流通，联邦债务则主要随财政赤字和借款变化。截至 2025 财年末，美国联邦总债务约 37.5 万亿美元。按美国国会预算办公室口径，该财年净利息约 9,700 亿美元，高于国防总支出约 8,910 亿美元。</p>
+      </article>
+      <article>
+        <span>03 / 储备与结算</span>
+        <h3>如何观察美元地位的变化？</h3>
+        <p>央行增持黄金可以分散储备，一些贸易伙伴也可以选择本币结算。要判断美元的地位是否变化，可以分别跟踪外汇储备构成、贸易计价与结算、跨境融资币种。它们变化的速度可能不同。</p>
+      </article>
+    </div>
+    <details class="learning-boundary loop-boundary">
+      <summary>查看数据口径与参考来源</summary>
+      <p>联邦总债务包括公众持有债务与政府内部持有债务。净利息与国防总支出为 2025 财年的联邦预算支出数据。</p>
+      <div class="learning-sources">
+        <a href="https://www.federalreserve.gov/econres/notes/feds-notes/the-international-role-of-the-u-s-dollar-2025-edition-20250718.html" target="_blank" rel="noopener noreferrer">美联储 · 美元的国际角色 ↗</a>
+        <a href="https://www.bis.org/publications/cgfs-paper-65-us-dollar-funding-international-perspective" target="_blank" rel="noopener noreferrer">国际清算银行 · 全球美元融资 ↗</a>
+        <a href="https://www.investor.gov/introduction-investing/investing-basics/glossary/primary-market" target="_blank" rel="noopener noreferrer">Investor.gov · 一级市场 ↗</a>
+        <a href="https://www.investor.gov/introduction-investing/investing-basics/glossary/secondary-market" target="_blank" rel="noopener noreferrer">Investor.gov · 二级市场 ↗</a>
+        <a href="https://fiscal.treasury.gov/accounting/us-financial-report/government-financial-position" target="_blank" rel="noopener noreferrer">美国财政部 · 联邦债务 ↗</a>
+        <a href="https://www.cbo.gov/publication/62105" target="_blank" rel="noopener noreferrer">美国国会预算办公室 · 净利息与国防支出 ↗</a>
+        <a href="https://www.federalreserve.gov/econres/ifdp/exploring-central-bank-gold-purchases-and-the-dollars-role-in-international-reserves.htm" target="_blank" rel="noopener noreferrer">美联储 · 央行黄金储备研究 ↗</a>
+      </div>
+    </details>
+  </section>
+
+  <section class="perspective-section" id="perspective" aria-labelledby="perspective-title"><span class="mini-label">BEYOND THE PRICE / 本质与思考</span><h2 id="perspective-title"><span class="section-num">07</span> 读懂联系，也读懂变化的原因。</h2><blockquote>五种资产，是观察全球经济权力结构的一扇窗。</blockquote><p>黄金、美元、美股、美债与石油，连接着货币制度、国家信用、企业盈利、能源供需与政策选择。它们的涨跌，也折射出人们面对收益、不确定性、贪婪与恐惧时的反应。</p><p>把历史与机制放在一起，追问三件事：<strong>什么冲击先发生？它通过哪条路径传导？什么条件会让关系反转？</strong>这样的提问，比记住一组固定的涨跌搭档更有用。</p><a href="#lab">回到关系实验室，亲手验证假设 ↑</a></section>
+
+  <section class="takeaways" aria-label="理解资产关系的三个关键"><article><span>01 / 利率是枢纽</span><h3>先分清实际利率与名义利率</h3><p>黄金更关注持有它的机会成本；固定息票美债的价格，与到期收益率反向变动。</p></article><article><span>02 / 原因比方向更重要</span><h3>同样是油价上涨，含义也不同</h3><p>需求旺盛可能伴随股票走强；供应中断却可能推高成本、压低股票估值。</p></article><article><span>03 / 关系会切换</span><h3>避险资产，也会有分歧</h3><p>现金紧缺时，黄金甚至美债也可能遭抛售。资产之间没有永恒的涨跌搭档。</p></article></section>
+  <footer><div class="footer-brand">✳ 资产引力场 <span>把市场放在一起看。</span></div><p>教学机制模型 · 美元计价视角 · 非收益预测</p><button id="footer-sources" class="text-button">参考来源与模型说明 ↗</button></footer>
+</main>
+<dialog id="asset-dialog" class="asset-dialog" aria-labelledby="asset-note-title" aria-describedby="asset-note-summary">
+  <div class="dialog-head"><div><span class="mini-label">UNDERSTAND THE ASSET / 资产解说</span><h2 id="asset-note-title"></h2></div><button id="asset-note-close" class="close-button" aria-label="关闭资产解说">×</button></div>
+  <nav id="asset-note-nav" class="asset-note-nav" aria-label="切换资产解说"></nav>
+  <div id="asset-note-body" class="asset-note-body"></div>
+  <div class="asset-note-footer"><span>读懂资产，再看它们如何联动。</span><button type="button" id="asset-note-relations" class="small-button">查看关联关系 →</button></div>
+</dialog>
+<dialog id="sources-dialog" aria-labelledby="dialog-title"><div class="dialog-head"><div><span class="mini-label">READ THE MECHANISM</span><h2 id="dialog-title">原理、来源与推演假设</h2></div><button id="source-close" class="close-button" aria-label="关闭说明">×</button></div><div class="dialog-body">
+  <h3>这里展示什么？</h3><p>这是一个帮助理解传导机制的互动教学页，没有接入实时价格，也没有使用历史样本计算相关系数。情景结论是依据下列原理设计的示意推演，所有权重由本页设定，未经统计拟合。</p>
+  <p>黄金以美元金价为视角；美元指相对一篮子主要货币的强弱；美股指大盘整体；美债指固定息票中长期美国国债的价格方向，或对应到期收益率的方向；石油指国际原油美元价格。不是具体证券或基金的报价。</p>
+  <h3>四个值得先读的来源</h3>
+  <ol class="source-list"><li><a href="https://www.federalreserve.gov/monetarypolicy/monetary-policy-what-are-its-goals-how-does-it-work.htm" target="_blank" rel="noopener noreferrer">美联储 · 货币政策如何传导 ↗</a><p>利率通过融资成本、资产估值和汇率影响经济；长期利率也取决于市场预期。</p></li><li><a href="https://www.chicagofed.org/publications/chicago-fed-letter/2021/464" target="_blank" rel="noopener noreferrer">芝加哥联储 · 什么驱动金价？ ↗</a><p>考察实际利率、通胀预期和经济风险与黄金的关系。黄金并非在所有时期都有效对冲通胀。</p></li><li><a href="https://www.stlouisfed.org/publications/page-one-economics/2023/11/03/why-do-bond-prices-and-interest-rates-move-in-opposite-directions" target="_blank" rel="noopener noreferrer">圣路易斯联储 · 债券价格与利率 ↗</a><p>解释固定息票债券价格和市场收益率的反向关系。</p></li><li><a href="https://www.eia.gov/energyexplained/oil-and-petroleum-products/prices-and-outlook.php" target="_blank" rel="noopener noreferrer">美国能源信息署 · 油价与供需 ↗</a><p>经济活动影响原油需求，产量与供给中断影响可用供应。</p></li></ol>
+  <h3>推演方式与边界</h3><p>六项输入是相对基准的假设变化：R 实际利率预期、G 增长预期、I 通胀预期、V 避险需求、S 原油供给收紧、L 现金紧缺。预设把多项变化组合起来；自定义时，各项输入互相独立，不会自动形成经济反馈。</p>
+  <p>双击资产会进入“手动方向推演”：第一次设为偏弱，再次双击设为偏强。其他资产仅按当前情景下与起点的直接关系联动：双剑反向、握手同向、下棋显示“关系不定”。此时不使用下列加权分值，也不显示强度刻度；不继续沿其他资产递推。切换情景、拖动宏观变量或点击“恢复情景推演”可退出。</p>
+  <p>美元示意分值 D = 0.9R + 0.25G + 0.7V + 1.1L；名义收益率分值 Y = 0.9R + 0.65I + 0.35G − 0.8V + 1.4L。美元的利率项假设其他经济体利率不变；避险项假设美国资产仍受信任，未建模美国特有的信用冲击。</p>
+  <div class="formula-list"><p>黄金 = −R − 0.4D + 0.8I + 0.9V − 1.7L</p><p>美股 = G − 0.8R − 0.6I − 0.9V − 0.8L − 0.35S</p><p>美债价格 = −Y；美债收益率 = Y</p><p>石油 = 1.1G + 0.2I − 0.3D + 1.2S − 0.5V − 0.6L</p></div>
+  <p>分值绝对值低于 0.45 显示“多空交织”；低于 1.4 显示“偏强 / 偏弱”；否则显示“上行 / 下行压力较强”。这些分档仅便于教学展示，不代表价格幅度、概率或置信度。</p><p>未考虑期限溢价、央行购金、OPEC具体政策、公司行业差异、仓位、估值起点和政策反馈；输入也不是对未来的判断。关系网络展示的是常见条件下的机制，不是由两条示意分值计算的相关性。</p>
+  <h3>怎么看才有用？</h3><p>先选情景，再点资产或两两关系，看清“什么驱动 → 如何传导 → 何时失效”。重点关注变化背后的原因，以及是否已被市场提前计价。</p>
+  <h3>图形署名</h3><p>握手图形来自 <a href="https://github.com/jdecked/twemoji/blob/main/assets/svg/1f91d.svg" target="_blank" rel="noopener noreferrer">Twemoji（Twitter, Inc. 及贡献者）</a>，采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> 许可。本页保留其手部轮廓，调整显示尺寸并添加整体摆动。</p>
+</div></dialog>
+</body>
+</html>
